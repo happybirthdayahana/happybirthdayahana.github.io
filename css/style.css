@@ -337,7 +337,7 @@ b{font-weight:600}
 .artshow figcaption{font-family:var(--font-script);font-weight:700;font-size:1.5rem;color:var(--pink-soft)}
 
 /* ---- CH06 memory gift-boxes (tap to reveal) ---- */
-.mboxes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:340px}
+.mboxes{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;width:100%;max-width:330px}
 .mbox{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,.22);
   background:linear-gradient(150deg,#ffa9d3,#ff5fa8 52%,#ff9d5c);box-shadow:var(--shadow);
   display:grid;place-items:center;transition:transform .18s var(--ease);animation:mwobble 3.2s ease-in-out infinite}
@@ -352,6 +352,7 @@ b{font-weight:600}
 .mbox.is-open{animation:none;background:#0e0722;border-color:rgba(255,255,255,.3)}
 .mbox.is-open::before,.mbox.is-open::after{content:none;display:none}
 .mbox img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:mreveal .55s var(--ease)}
+.mbox:nth-child(5) img{object-fit:contain;background:#0e0722}   /* both-eyes photo: zoom out so both eyes show fully */
 @keyframes mreveal{0%{opacity:0;transform:scale(1.25) rotate(-3deg)}100%{opacity:1;transform:none}}
 @keyframes mwobble{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-4px) rotate(1.5deg)}}
 .memcap{min-height:2.8em;max-width:32ch;color:var(--pink-soft);font-size:.96rem;font-weight:500;line-height:1.35;margin-top:.2rem;opacity:.6}
@@ -359,8 +360,8 @@ b{font-weight:600}
 @keyframes capPop{0%{opacity:0;transform:translateY(9px) scale(.96)}100%{opacity:1;transform:none}}
 
 /* ---- CH08 twin / same-birthday ---- */
-.twinpic{width:min(64vw,250px);border-radius:16px;overflow:hidden;border:1px solid var(--card-bd);box-shadow:0 18px 52px rgba(168,107,255,.45)}
-.twinpic img{width:100%;height:auto;display:block;aspect-ratio:3/4;object-fit:cover}
+.twinpic{width:min(70vw,270px);border-radius:16px;overflow:hidden;border:1px solid var(--card-bd);box-shadow:0 18px 52px rgba(168,107,255,.45);background:#0e0722}
+.twinpic img{width:100%;height:auto;display:block}   /* full uncropped picture — complete hands visible */
 
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.1ms!important}
