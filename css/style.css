@@ -254,8 +254,9 @@ b{font-weight:600}
 .nameArt{width:min(82vw,360px);margin:0 auto}
 .nameArt svg{width:100%;height:auto;display:block;overflow:visible;filter:drop-shadow(0 10px 16px rgba(0,0,0,.4))}
 /* on open: whole thing rises from below, then settles into a gentle idle float */
-.name3d-wrap:not([hidden]) .nameArt{animation:riseFloat 2.3s cubic-bezier(.42,0,.35,1) both, floaty 3.6s ease-in-out 2.5s infinite}
-@keyframes riseFloat{0%{transform:translateY(300px);opacity:0}25%{opacity:1}100%{transform:translateY(0);opacity:1}}
+/* slow rise, then float continues IMMEDIATELY (no static gap) so there's no stutter/blink at the end */
+.name3d-wrap:not([hidden]) .nameArt{animation:riseFloat 2.2s cubic-bezier(.34,0,.32,1) both, floaty 3.6s ease-in-out 2.2s infinite}
+@keyframes riseFloat{0%{transform:translateY(300px);opacity:0}22%{opacity:1}100%{transform:translateY(0);opacity:1}}
 .name3d__cap{font-family:var(--font-script);font-weight:700;font-size:1.9rem;color:var(--pink-soft);margin-top:2px;line-height:1.05}
 .name3d__cap .cap-sub{font-size:.6em;color:var(--purple2)}
 
@@ -323,7 +324,7 @@ b{font-weight:600}
 
 /* ---- CH9 video ---- */
 .videowrap{width:min(82vw,340px);border-radius:16px;overflow:hidden;border:1px solid var(--card-bd);box-shadow:var(--shadow);background:#000}
-.final-video{width:100%;max-height:60vh;object-fit:contain;background:#000;display:block}
+.final-video{width:100%;max-height:52vh;object-fit:contain;background:#000;display:block}   /* bounded so the full clip + its bottom text always fit on screen */
 
 /* ---- CH10 end ---- */
 .end{display:flex;flex-direction:column;align-items:center;gap:.8rem}
@@ -361,8 +362,8 @@ b{font-weight:600}
 @keyframes capPop{0%{opacity:0;transform:translateY(9px) scale(.96)}100%{opacity:1;transform:none}}
 
 /* ---- CH08 twin / same-birthday ---- */
-.twinpic{width:min(70vw,270px);border-radius:16px;overflow:hidden;border:1px solid var(--card-bd);box-shadow:0 18px 52px rgba(168,107,255,.45);background:#0e0722}
-.twinpic img{width:100%;height:auto;display:block}   /* full uncropped picture — complete hands visible */
+.twinpic{width:fit-content;max-width:76vw;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid var(--card-bd);box-shadow:0 18px 52px rgba(168,107,255,.45);background:#0e0722}
+.twinpic img{display:block;height:auto;width:auto;max-height:40vh;max-width:100%}   /* full uncropped picture, bounded so the whole chapter fits on screen */
 
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.1ms!important}
