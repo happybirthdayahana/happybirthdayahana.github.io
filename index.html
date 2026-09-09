@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Happy Birthday, Ahana ✨</title>
+  <meta name="description" content="A little surprise, made with love — under the same moon 🌙" />
+  <meta name="theme-color" content="#1a0f2e" />
+  <meta property="og:title" content="Ahana, someone made you a surprise ✨" />
+  <meta property="og:description" content="Tap to open your birthday surprise 🎂" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,900;1,9..144,600&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=1" />
+
+  <script type="importmap">
+  { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  } }
+  </script>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="moon" aria-hidden="true"></div>
+  <div class="stars" id="stars" aria-hidden="true"></div>
+  <canvas id="fx" class="fx" aria-hidden="true"></canvas>
+
+  <button id="audioBtn" class="audio-btn" aria-label="Toggle sound" title="Sound on/off">
+    <span class="audio-btn__on">🔊</span><span class="audio-btn__off">🔇</span>
+  </button>
+
+  <div id="progress" class="progress" aria-hidden="true"></div>
+
+  <!-- ===================== GATE ===================== -->
+  <div id="gate" class="gate">
+    <div class="gate__inner">
+      <div class="gate__gift" id="gateGift">
+        <div class="giftbox">
+          <div class="giftbox__lid"></div><div class="giftbox__box"></div>
+          <div class="giftbox__ribbon-v"></div><div class="giftbox__bow"></div>
+        </div>
+      </div>
+      <p class="gate__eyebrow">for someone really special</p>
+      <h1 class="gate__title">Ahana G…</h1>
+      <p class="gate__sub">kisi ne tumhare liye ek chhota sa surprise banaya hai 🎁</p>
+      <button id="openBtn" class="btn btn--big"><span>Tap to open</span> <span class="btn__ico">🎀</span></button>
+      <p class="gate__hint">🎧 headphones laga lena — zyada mazaa aayega</p>
+    </div>
+  </div>
+
+  <!-- ===================== STAGE ===================== -->
+  <main id="stage" class="stage" aria-live="polite">
+
+    <!-- 01 — incoming call: slide to answer -->
+    <section class="chapter" id="ch-call">
+      <div class="call">
+        <div class="call__avatar"><span class="ph">🎂</span></div>
+        <div class="call__top">
+          <p class="call__from">Birthday 🎂</p>
+          <p class="call__sub">is calling…</p>
+        </div>
+        <div class="call__date"><span class="call__d">11</span><span class="call__m">October</span></div>
+        <div class="call__acts">
+          <div class="call__act"><span class="call__ic">⏰</span>Remind Me</div>
+          <div class="call__act"><span class="call__ic">💬</span>Message</div>
+        </div>
+        <div class="call__track" id="callTrack">
+          <div class="call__knob" id="callKnob">📞</div>
+          <span class="call__hint" id="callSlideHint">slide to answer</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 — countdown + reveal -->
+    <section class="chapter" data-ch="0" id="ch-countdown">
+      <div class="countdown" id="countdown"><div class="countdown__num" id="cdNum">3</div></div>
+
+      <div class="media-duo" id="revealStage" hidden>
+        <div class="clip"><video id="introVideo" playsinline loop preload="auto"><source src="assets/opening.mp4" type="video/mp4" /></video></div>
+        <div class="photo">
+          <img src="assets/ahana.jpg" alt="Ahana" />
+          <div class="video-hb"><span class="vhb-date">11 October 2026</span>Happy Birthday<span class="script">Ahana</span></div>
+        </div>
+      </div>
+
+      <button class="btn next-btn" data-next hidden id="cdNext">there's more <span class="btn__ico">→</span></button>
+    </section>
+
+    <!-- 03 — name balloon game -->
+    <section class="chapter" data-ch="1" id="ch-name">
+      <h2 class="chapter__title" id="nameHead">11 October is <em>Ahana's</em> Day</h2>
+      <p class="chapter__hint" id="nameHint">Tap the balloons 🎈</p>
+      <div class="namebar" id="nameBar" aria-hidden="true"></div>
+      <div class="balloons" id="balloons"></div>
+      <div class="name3d-wrap" id="name3dWrap" hidden>
+        <div class="nameArt" aria-hidden="true">
+          <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="bl" cx="38%" cy="30%"><stop offset="0%" stop-color="#ffcfe4"/><stop offset="55%" stop-color="#ff5fa8"/><stop offset="100%" stop-color="#d81f6e"/></radialGradient>
+              <radialGradient id="bc" cx="38%" cy="30%"><stop offset="0%" stop-color="#ffd8b0"/><stop offset="55%" stop-color="#ff9d5c"/><stop offset="100%" stop-color="#e5722a"/></radialGradient>
+              <radialGradient id="br" cx="38%" cy="30%"><stop offset="0%" stop-color="#e0c2ff"/><stop offset="55%" stop-color="#a86bff"/><stop offset="100%" stop-color="#7c3bd0"/></radialGradient>
+              <linearGradient id="face" x1="0" y1="0" x2="0.15" y2="1"><stop offset="0%" stop-color="#ffe3c6"/><stop offset="22%" stop-color="#ffab6b"/><stop offset="50%" stop-color="#ff6fae"/><stop offset="78%" stop-color="#ff4f9e"/><stop offset="100%" stop-color="#c451c9"/></linearGradient>
+            </defs>
+            <!-- 3 balloon strings GATHER to one knot, then a single string runs down INTO/behind the name (no gap) -->
+            <path d="M138,88 Q152,122 210,153" fill="none" stroke="#ffe6f0" stroke-width="2.3"/>
+            <path d="M210,78 L210,153" fill="none" stroke="#ffe6f0" stroke-width="2.3"/>
+            <path d="M282,88 Q268,122 210,153" fill="none" stroke="#ffe6f0" stroke-width="2.3"/>
+            <circle cx="210" cy="153" r="3.4" fill="#fff4fa"/>
+            <line x1="210" y1="153" x2="210" y2="226" stroke="#ffe6f0" stroke-width="2.7"/>
+            <!-- AHANA — DEEP 3D extruded block (18 layers, deep purple back -> glossy sunset face). Drawn OVER the strings. -->
+            <g font-family="'Playfair Display',Georgia,serif" font-weight="900" font-size="66" text-anchor="middle">
+              <text x="225.3" y="267.1" fill="#25074a">AHANA</text>
+              <text x="224.5" y="266.2" fill="#2b0951">AHANA</text>
+              <text x="223.6" y="265.2" fill="#320b58">AHANA</text>
+              <text x="222.8" y="264.3" fill="#3a0d60">AHANA</text>
+              <text x="221.9" y="263.3" fill="#430f68">AHANA</text>
+              <text x="221.1" y="262.4" fill="#4d1170">AHANA</text>
+              <text x="220.2" y="261.4" fill="#571478">AHANA</text>
+              <text x="219.4" y="260.5" fill="#631680">AHANA</text>
+              <text x="218.5" y="259.5" fill="#6f1988">AHANA</text>
+              <text x="217.7" y="258.6" fill="#7c1c8f">AHANA</text>
+              <text x="216.8" y="257.6" fill="#8a2096">AHANA</text>
+              <text x="216.0" y="256.7" fill="#98249c">AHANA</text>
+              <text x="215.1" y="255.7" fill="#a728a2">AHANA</text>
+              <text x="214.3" y="254.8" fill="#b52da6">AHANA</text>
+              <text x="213.4" y="253.8" fill="#c332a8">AHANA</text>
+              <text x="212.6" y="252.9" fill="#d038a8">AHANA</text>
+              <text x="211.7" y="251.9" fill="#dc3fa6">AHANA</text>
+              <text x="210.9" y="251.0" fill="#e648a1">AHANA</text>
+              <text x="210.0" y="250.0" fill="url(#face)">AHANA</text>
+            </g>
+            <!-- balloons (front) — a bunch of pink / orange / purple -->
+            <g>
+              <ellipse cx="138" cy="52" rx="29" ry="36" fill="url(#bl)"/>
+              <path d="M138,86 l-5,7 h10 z" fill="#d81f6e"/>
+              <ellipse cx="129" cy="41" rx="6.5" ry="9.5" fill="rgba(255,255,255,.55)"/>
+            </g>
+            <g>
+              <ellipse cx="210" cy="40" rx="31" ry="38" fill="url(#bc)"/>
+              <path d="M210,76 l-5,7 h10 z" fill="#e5722a"/>
+              <ellipse cx="201" cy="29" rx="7" ry="10" fill="rgba(255,255,255,.55)"/>
+            </g>
+            <g>
+              <ellipse cx="282" cy="52" rx="29" ry="36" fill="url(#br)"/>
+              <path d="M282,86 l-5,7 h10 z" fill="#7c3bd0"/>
+              <ellipse cx="273" cy="41" rx="6.5" ry="9.5" fill="rgba(255,255,255,.55)"/>
+            </g>
+          </svg>
+        </div>
+        <p class="name3d__cap">the star of today ✨</p>
+      </div>
+      <button class="btn next-btn" data-next hidden id="nameNext">next <span class="btn__ico">→</span></button>
+    </section>
+
+    <!-- 04 — the artist -->
+    <section class="chapter" data-ch="2" id="ch-artist">
+      <p class="kicker">the artist</p>
+      <h2 class="chapter__title">You are a real <em>artist</em> 🎨</h2>
+      <figure class="artshow">
+        <div class="artshow__frame"><img src="assets/art.jpg" alt="A painting made by Ahana" loading="lazy" /><span class="art__shine"></span></div>
+        <figcaption>painted by your own hands 🖌️</figcaption>
+      </figure>
+      <p class="chapter__body">Every canvas you touch turns into a feeling.<br/>Your art book is full of little worlds only you can see.<br/><span class="soft">Genius hands, and an even more genius heart.</span></p>
+      <button class="btn next-btn" data-next>keep going <span class="btn__ico">→</span></button>
+    </section>
+
+    <!-- 05 — big dreams -->
+    <section class="chapter" data-ch="3" id="ch-future">
+      <p class="kicker">big dreams</p>
+      <h2 class="chapter__title">The world's next <em>lawyer</em> ⚖️</h2>
+      <div class="badges">
+        <div class="badge"><div class="badge__ico">⚖️</div><div class="badge__t">Lawyer</div><div class="badge__s">objection! 😎</div></div>
+        <div class="badge"><div class="badge__ico">🌍</div><div class="badge__t">Import·Export</div><div class="badge__s">boss in the making</div></div>
+        <div class="badge"><div class="badge__ico">🎨</div><div class="badge__t">Artist</div><div class="badge__s">already iconic</div></div>
+      </div>
+      <p class="chapter__body">Studying hard, all the way in China 🇨🇳 — chasing a dream most people only talk about.<br/><span class="soft">One day you'll win a case, run your own business, and paint it all beautiful. Watch.</span></p>
+      <button class="btn next-btn" data-next>there's more <span class="btn__ico">→</span></button>
+    </section>
+
+    <!-- 06 — memory boxes (tap to reveal) -->
+    <section class="chapter" data-ch="4" id="ch-memories">
+      <p class="kicker">our little memories</p>
+      <h2 class="chapter__title">Tap to open a <em>memory</em> 🎁</h2>
+      <p class="chapter__hint" id="memHint">open them all 🤍</p>
+      <div class="mboxes" id="mboxes">
+        <button class="mbox" data-img="assets/mem-concert.jpg" data-line="all-black fit, all-in energy — that concert night 🎤"></button>
+        <button class="mbox" data-img="assets/mem-shoes.jpg" data-line="same vibe, same squad, same circle 👟"></button>
+        <button class="mbox" data-img="assets/mem-mask.jpg" data-line="partners in crime, hamesha 🖤"></button>
+        <button class="mbox" data-img="assets/mem-loser.jpg" data-line="Ludo mein tumne mere haath pe 'loser' likh diya 😭 cheating queen kahin ki 🎲 — par jeet toh hamesha tumhari!"></button>
+        <button class="mbox" data-img="assets/mem-eyes.jpg" data-line="those eyes — they never miss a thing 👀"></button>
+        <button class="mbox" data-img="assets/mem-eye.jpg" data-line="main-character energy, always ✨"></button>
+      </div>
+      <p class="memcap" id="memCap">tap a box 🎁</p>
+      <button class="btn next-btn" data-next hidden id="memNext">keep going <span class="btn__ico">→</span></button>
+    </section>
+
+    <!-- 07 — numbers -->
+    <section class="chapter" data-ch="5" id="ch-stats">
+      <p class="kicker">a whole life</p>
+      <h2 class="chapter__title">17 years under the same <em>moon</em> 🌙</h2>
+      <div class="stats">
+        <div class="stat"><div class="stat__n" data-count="17">0</div><div class="stat__l">years</div></div>
+        <div class="stat"><div class="stat__n" data-count="204">0</div><div class="stat__l">months</div></div>
+        <div class="stat"><div class="stat__n" data-count="887">0</div><div class="stat__l">weeks</div></div>
+        <div class="stat"><div class="stat__n" data-count="6209">0</div><div class="stat__l">days</div></div>
+        <div class="stat stat--wide"><div class="stat__n" data-count="715000000" data-suffix="+">0</div><div class="stat__l">heartbeats ❤️</div></div>
+      </div>
+      <p class="chapter__body soft">…and every single one made you more <i>you</i>. 🌙</p>
+      <button class="btn next-btn" data-next>almost there <span class="btn__ico">→</span></button>
+    </section>
+
+    <!-- 08 — same birthday / twin star -->
+    <section class="chapter" data-ch="6" id="ch-twin">
+      <p class="kicker">the best part</p>
+      <h2 class="chapter__title">Same day, same <em>star</em> ⭐</h2>
+      <figure class="twinpic"><img src="assets/twin-hands.jpg" alt="Two hands" loading="lazy" /></figure>
+      <p class="chapter__body">11 October — <b>tumhara bhi, mera bhi.</b><br/>Theek 10 saal ka farq, par din bilkul wahi.<br/><span class="soft">Poori duniya mein ek hi din, do log… meri cousin, mera twin star. Isse pyaara sanyog aur kya hoga? 🌙⭐</span></p>
+      <button class="btn next-btn" data-next>now… the real surprise <span class="btn__ico">→</span></button>
+    </section>
+
+    <!-- 09 — the wish -->
+    <section class="chapter" data-ch="7" id="ch-wish">
+      <div class="wish">
+        <h2 class="wish__title">Happy Birthday,<br/><span class="script">Ahana</span></h2>
+        <div class="cake3d" id="cake3d">
+          <div class="cake" id="cake">
+            <div class="cake__plate"></div><div class="cake__base"></div><div class="cake__cream"></div>
+            <div class="cake__name">AHANA</div>
+            <div class="cake__candle"><span class="flame" data-flame></span></div>
+            <div class="cake__candle"><span class="flame" data-flame></span></div>
+            <div class="cake__candle"><span class="flame" data-flame></span></div>
+          </div>
+        </div>
+        <p class="cake__hint" id="cakeHint">make a wish — tap the cake to blow the candles 🎂</p>
+        <button class="btn btn--ghost mic-btn" id="micBtn" hidden>🎤 or blow into your phone</button>
+        <p class="wish__msg" id="wishMsg" hidden>
+          Ahana, people like you are rare — gifted, genuine, and completely unstoppable.
+          May every canvas you paint, every case you win, and every dream you chase come true.
+          <b>May every single day of yours shine golden.</b> 🌟
+        </p>
+        <button class="btn next-btn" data-next hidden id="wishNext">one last thing <span class="btn__ico">→</span></button>
+      </div>
+    </section>
+
+    <!-- 10 — her photo + balloons -->
+    <section class="chapter" data-ch="8" id="ch-her">
+      <p class="kicker">for you</p>
+      <h2 class="chapter__title">Your day is finally <em>here</em> 🎂</h2>
+      <div class="bigphoto" id="herPhoto" role="button" tabindex="0" aria-label="tap the photo">
+        <img src="assets/ahana.jpg" alt="Ahana" />
+        <div class="bigphoto__balloons" id="herBalloons" aria-hidden="true"></div>
+        <div class="video-hb">Happy Birthday<span class="script">Ahana</span></div>
+      </div>
+      <p class="tap-hint" id="tapHint" hidden>👆 tap the photo</p>
+    </section>
+
+    <!-- 11 — final clip -->
+    <section class="chapter" data-ch="9" id="ch-video">
+      <p class="kicker">one last thing 🎬</p>
+      <div class="videowrap">
+        <video id="finaleVideo" class="final-video" playsinline preload="auto"><source src="assets/finale.mp4" type="video/mp4" /></video>
+      </div>
+      <p class="chapter__body script sign">— Rahul</p>
+      <p class="chapter__body soft small">(your cousin, your twin-star — proud of you, always 💛)</p>
+      <button class="btn next-btn" data-next>the last page <span class="btn__ico">→</span></button>
+    </section>
+
+    <!-- 12 — end -->
+    <section class="chapter" data-ch="10" id="ch-end">
+      <div class="end">
+        <div class="end__cake">🌙</div>
+        <h2 class="chapter__title">Yeh link hamesha <em>tumhara</em> hai</h2>
+        <p class="chapter__body">Jab bhi muskurana ho — ise khol lena.<br/><span class="soft">Yeh kabhi purana nahi hoga. ❤️</span></p>
+        <div class="end__actions">
+          <button class="btn btn--ghost" id="replayBtn">↺ Phir se dekhein</button>
+          <button class="btn" id="shareBtn">Share 💌</button>
+        </div>
+        <p class="end__made">made with ❤️ by <b>Rahul</b> · for <b>Ahana</b> · 11 Oct 2026</p>
+      </div>
+    </section>
+
+  </main>
+
+  <audio id="bgm" src="assets/bg-piano.mp3" preload="auto" loop playsinline></audio>
+  <script type="module" src="js/app.js?v=1"></script>
+</body>
+</html>
