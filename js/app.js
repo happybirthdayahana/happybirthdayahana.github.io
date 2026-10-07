@@ -242,6 +242,7 @@ onEnter["ch-countdown"] = async () => {
   for (const n of [3, 2, 1]) { numEl.textContent = n; numEl.classList.remove("pop"); void numEl.offsetWidth; numEl.classList.add("pop"); Sound.tick(); await sleep(850); }
   numEl.textContent = ""; cd.hidden = true;                    // remove the lingering "1"
   rs.hidden = false;                                           // clip (top) + Ameena photo (#1) shown together
+  if (!vid.src && window.VAULT) { try { vid.src = await window.VAULT.get("opening"); vid.load?.(); } catch (_) {} }
   vid.muted = Sound.isMuted();                                 // opening clip plays its own music
   vid.play?.().catch(() => { vid.muted = true; vid.play?.().catch(() => {}); });
   await sleep(300);
@@ -355,8 +356,9 @@ onEnter["ch-her"] = () => {
 onLeave["ch-her"] = () => { stopHerBalloons(); };
 
 /* CH9b (ch-video) — the personalized final clip, with its own audio */
-onEnter["ch-video"] = () => {
+onEnter["ch-video"] = async () => {
   const v = $("#finaleVideo");
+  if (!v.src && window.VAULT) { try { v.src = await window.VAULT.get("finale"); v.load?.(); } catch (_) {} }
   try { v.currentTime = 0; } catch (_) {}
   v.muted = Sound.isMuted();
   v.play?.().catch(() => { v.muted = true; v.play?.().catch(() => {}); });

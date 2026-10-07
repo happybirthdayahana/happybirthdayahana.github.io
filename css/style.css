@@ -18,6 +18,7 @@
   --font-d:"Fraunces","Playfair Display",Georgia,serif;
   --font-s:"Poppins",system-ui,sans-serif;
   --font-script:"Dancing Script","Great Vibes",cursive;
+  --roses:none;   /* replaced with the decrypted photo (blob URL) after unlock */
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}   /* make sure hidden buttons/wraps stay hidden until JS reveals them */
@@ -372,13 +373,13 @@ b{font-weight:600}
 .chbg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;animation:none!important}
 /* soft blurred fill behind, so the screen is full-bleed and never shows empty bars */
 .chbg::before{content:"";position:absolute;inset:-8%;
-  background:url(../assets/roses.jpg) center/cover no-repeat;
+  background:var(--roses) center/cover no-repeat;
   filter:blur(22px) brightness(.45) saturate(1.05);transform:scale(1.06)}
 /* the WHOLE photo, contained (never cropped) + a gentle top/bottom scrim for text legibility */
 .chbg::after{content:"";position:absolute;inset:0;
   background:
     linear-gradient(180deg,rgba(14,6,30,.52) 0%,rgba(14,6,30,.14) 20%,rgba(14,6,30,0) 42%,rgba(14,6,30,.10) 64%,rgba(14,6,30,.74) 100%),
-    url(../assets/roses.jpg) center/contain no-repeat}
+    var(--roses) center/contain no-repeat}
 
 /* ---- LOCK (password gate — keeps the surprise private) ---- */
 .lock{position:fixed;inset:0;z-index:200;display:grid;place-items:center;text-align:center;padding:26px;

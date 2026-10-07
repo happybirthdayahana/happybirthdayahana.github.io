@@ -76,7 +76,7 @@
     <!-- 01 — incoming call: slide to answer -->
     <section class="chapter" id="ch-call">
       <div class="call">
-        <div class="call__avatar"><img src="assets/caller.jpg" alt="" onerror="this.remove()" /><span class="ph">🎂</span></div>
+        <div class="call__avatar"><img data-k="caller" alt="" /><span class="ph">🎂</span></div>
         <div class="call__top">
           <p class="call__from">Birthday 🎂</p>
           <p class="call__sub">is calling…</p>
@@ -98,9 +98,9 @@
       <div class="countdown" id="countdown"><div class="countdown__num" id="cdNum">3</div></div>
 
       <div class="media-duo" id="revealStage" hidden>
-        <div class="clip"><video id="introVideo" playsinline loop preload="auto"><source src="assets/opening.mp4?v=3" type="video/mp4" /></video></div>
+        <div class="clip"><video id="introVideo" data-k="opening" playsinline loop preload="auto"></video></div>
         <div class="photo">
-          <img src="assets/ahana.jpg" alt="Ahana" />
+          <img data-k="ahana" alt="Ahana" />
           <div class="video-hb"><span class="vhb-date">11 October 2026</span>Happy Birthday<span class="script">Ahana</span></div>
         </div>
       </div>
@@ -182,7 +182,7 @@
       <p class="kicker">the artist</p>
       <h2 class="chapter__title">You are a real <em>artist</em> 🎨</h2>
       <figure class="artshow">
-        <div class="artshow__frame"><img src="assets/art.jpg" alt="A painting made by Ahana" loading="lazy" /><span class="art__shine"></span></div>
+        <div class="artshow__frame"><img data-k="art" alt="A painting made by Ahana" loading="lazy" /><span class="art__shine"></span></div>
         <figcaption>painted by your own hands 🖌️</figcaption>
       </figure>
       <p class="chapter__body">Every canvas you touch turns into a feeling.<br/>Your art book is full of little worlds only you can see.<br/><span class="soft">Genius hands, and an even more genius heart.</span></p>
@@ -208,12 +208,12 @@
       <h2 class="chapter__title">Tap to open a <em>memory</em> 🎁</h2>
       <p class="chapter__hint" id="memHint">open them all 🤍</p>
       <div class="mboxes" id="mboxes">
-        <button class="mbox" data-img="assets/mem-concert.jpg" data-line="all-black fit, all-in energy — that concert night 🎤"></button>
-        <button class="mbox" data-img="assets/mem-shoes.jpg" data-line="same vibe, same squad, same circle 👟"></button>
-        <button class="mbox" data-img="assets/mem-mask.jpg" data-line="partners in crime, hamesha 🖤"></button>
-        <button class="mbox" data-img="assets/mem-loser.jpg" data-line="Ludo mein tumne mere haath pe 'loser' likh diya 😭 cheating queen kahin ki 🎲 — par jeet toh hamesha tumhari!"></button>
-        <button class="mbox" data-img="assets/mem-eyes.jpg" data-line="those eyes — they never miss a thing 👀"></button>
-        <button class="mbox" data-img="assets/mem-eye.jpg" data-line="you and the moon — same soft, quiet glow 🌙✨"></button>
+        <button class="mbox" data-k="mem1" data-line="all-black fit, all-in energy — that concert night 🎤"></button>
+        <button class="mbox" data-k="mem2" data-line="same vibe, same squad, same circle 👟"></button>
+        <button class="mbox" data-k="mem3" data-line="partners in crime, hamesha 🖤"></button>
+        <button class="mbox" data-k="mem4" data-line="Ludo mein tumne mere haath pe 'loser' likh diya 😭 cheating queen kahin ki 🎲 — par jeet toh hamesha tumhari!"></button>
+        <button class="mbox" data-k="mem5" data-line="those eyes — they never miss a thing 👀"></button>
+        <button class="mbox" data-k="mem6" data-line="you and the moon — same soft, quiet glow 🌙✨"></button>
       </div>
       <p class="memcap" id="memCap">tap a box 🎁</p>
       <button class="btn next-btn" data-next hidden id="memNext">keep going <span class="btn__ico">→</span></button>
@@ -238,7 +238,7 @@
     <section class="chapter" data-ch="6" id="ch-twin">
       <p class="kicker">the best part</p>
       <h2 class="chapter__title">Same day, same <em>star</em> ❤️</h2>
-      <figure class="twinpic"><img src="assets/twin-hands.jpg" alt="Two hands" /></figure>
+      <figure class="twinpic"><img data-k="twin" alt="Two hands" /></figure>
       <p class="chapter__body">11 October — <b>tumhara bhi, mera bhi.</b><br/><span class="soft">Poori duniya mein ek hi din, do log… meri <b>best cousin</b>, mera twin star. Isse pyaara coincidence aur kya hoga? 🌙❤️</span></p>
       <button class="btn next-btn" data-next>now… the real surprise <span class="btn__ico">→</span></button>
     </section>
@@ -271,7 +271,7 @@
     <section class="chapter" data-ch="9" id="ch-video">
       <p class="kicker">one last thing 🎬</p>
       <div class="videowrap">
-        <video id="finaleVideo" class="final-video" playsinline preload="auto"><source src="assets/finale.mp4?v=2" type="video/mp4" /></video>
+        <video id="finaleVideo" class="final-video" data-k="finale" playsinline preload="auto"></video>
       </div>
       <p class="chapter__body script sign">— Rahul</p>
       <p class="chapter__body soft small">(your cousin, your twin-star — proud of you, always 💛)</p>
@@ -296,36 +296,95 @@
 
   <audio id="bgm" src="assets/bg-piano.mp3" preload="auto" loop playsinline></audio>
 
-  <!-- password gate: keeps the surprise private until the secret word is entered -->
+  <!-- =========================================================
+       PRIVATE VAULT + PASSWORD GATE
+       All personal photos & videos are AES-GCM encrypted (assets/*.enc).
+       They are NEVER stored in the repo as viewable files — the secret
+       word is the decryption key, so nothing shows without it.
+       ========================================================= -->
   <script>
   (function () {
     var lock  = document.getElementById('lock');
     var form  = document.getElementById('lockForm');
     var input = document.getElementById('lockInput');
     var err   = document.getElementById('lockErr');
+    var btn   = lock ? lock.querySelector('.lock__btn') : null;
     if (!lock || !form || !input) return;
-    var PASS = 'rahul';
+
+    var MANIFEST = {"salt":"KZeQMW+yDUAcsynOKmavKg==","iter":150000,"files":{"ahana":{"f":"assets/v01.enc","t":"image/jpeg"},"art":{"f":"assets/v02.enc","t":"image/jpeg"},"caller":{"f":"assets/v03.enc","t":"image/jpeg"},"twin":{"f":"assets/v04.enc","t":"image/jpeg"},"roses":{"f":"assets/v05.enc","t":"image/jpeg"},"mem1":{"f":"assets/v06.enc","t":"image/jpeg"},"mem2":{"f":"assets/v07.enc","t":"image/jpeg"},"mem3":{"f":"assets/v08.enc","t":"image/jpeg"},"mem4":{"f":"assets/v09.enc","t":"image/jpeg"},"mem5":{"f":"assets/v10.enc","t":"image/jpeg"},"mem6":{"f":"assets/v11.enc","t":"image/jpeg"},"opening":{"f":"assets/v12.enc","t":"video/mp4"},"finale":{"f":"assets/v13.enc","t":"video/mp4"}}};
+
+    function b64ToBytes(b64){ var s=atob(b64), a=new Uint8Array(s.length); for(var i=0;i<s.length;i++)a[i]=s.charCodeAt(i); return a; }
+
+    var keyPromise = null, cache = {};
+    function deriveKey(pw){
+      return crypto.subtle.importKey('raw', new TextEncoder().encode(pw), {name:'PBKDF2'}, false, ['deriveKey'])
+        .then(function(base){
+          return crypto.subtle.deriveKey(
+            {name:'PBKDF2', salt:b64ToBytes(MANIFEST.salt), iterations:MANIFEST.iter, hash:'SHA-256'},
+            base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+        });
+    }
+    function get(k){
+      if (cache[k]) return cache[k];
+      var meta = MANIFEST.files[k];
+      if (!meta || !keyPromise) return Promise.reject(new Error('locked:'+k));
+      cache[k] = keyPromise.then(function(key){
+        return fetch(meta.f).then(function(r){ return r.arrayBuffer(); }).then(function(buf){
+          var b = new Uint8Array(buf);
+          return crypto.subtle.decrypt({name:'AES-GCM', iv:b.slice(0,12)}, key, b.slice(12));
+        });
+      }).then(function(pt){ return URL.createObjectURL(new Blob([pt], {type:meta.t})); });
+      return cache[k];
+    }
+    window.VAULT = { get: get };
+
+    function wireAll(){
+      var jobs = [];
+      document.querySelectorAll('img[data-k]').forEach(function(img){
+        jobs.push(get(img.getAttribute('data-k')).then(function(u){ img.src = u; }).catch(function(){}));
+      });
+      jobs.push(get('roses').then(function(u){
+        document.documentElement.style.setProperty('--roses', 'url("' + u + '")');
+      }).catch(function(){}));
+      document.querySelectorAll('.mbox[data-k]').forEach(function(box){
+        jobs.push(get(box.getAttribute('data-k')).then(function(u){ box.dataset.img = u; }).catch(function(){}));
+      });
+      return Promise.all(jobs);
+    }
+    function reveal(){
+      lock.classList.add('is-gone');
+      document.documentElement.classList.remove('is-locked');
+      setTimeout(function(){ if (lock && lock.parentNode) lock.parentNode.removeChild(lock); }, 750);
+    }
+    function fail(msg){
+      keyPromise = null; cache = {};
+      if (btn) btn.innerHTML = '<span>Unlock</span> <span class="btn__ico">🔓</span>';
+      if (err) { err.textContent = msg || 'oho! galat password 🙈 ek baar phir try karo'; err.hidden = false; }
+      input.value = '';
+      lock.classList.remove('shake'); void lock.offsetWidth; lock.classList.add('shake');
+      try { input.focus(); } catch (_) {}
+    }
+
+    var busy = false;
     document.documentElement.classList.add('is-locked');
-    setTimeout(function () { try { input.focus(); } catch (_) {} }, 350);
+    setTimeout(function(){ try { input.focus(); } catch (_) {} }, 350);
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (busy) return;
       var val = (input.value || '').trim().toLowerCase();
-      if (val === PASS) {
-        lock.classList.add('is-gone');
-        document.documentElement.classList.remove('is-locked');
-        setTimeout(function () { if (lock && lock.parentNode) lock.parentNode.removeChild(lock); }, 750);
-      } else {
-        if (err) err.hidden = false;
-        input.value = '';
-        lock.classList.remove('shake');
-        void lock.offsetWidth;            /* restart the shake animation */
-        lock.classList.add('shake');
-        try { input.focus(); } catch (_) {}
-      }
+      if (!val) { fail(); return; }
+      busy = true;
+      if (err) err.hidden = true;
+      if (btn) btn.innerHTML = '<span>Unlocking…</span> <span class="btn__ico">✨</span>';
+      keyPromise = deriveKey(val);
+      get('caller')                         // probe: AES-GCM only decrypts with the right key
+        .then(function(){ var p = wireAll(); get('opening'); get('finale'); return p; })  // prewarm videos
+        .then(reveal)
+        .catch(function(){ busy = false; fail(); });
     });
   })();
   </script>
 
-  <script type="module" src="js/app.js?v=1"></script>
+  <script type="module" src="js/app.js?v=2"></script>
 </body>
 </html>
