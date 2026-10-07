@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,900;1,9..144,600&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=4" />
+  <link rel="stylesheet" href="css/style.css?v=5" />
 
   <script type="importmap">
   { "imports": {
@@ -24,6 +24,24 @@
   </script>
 </head>
 <body>
+  <!-- ===================== LOCK (password gate) ===================== -->
+  <div id="lock" class="lock">
+    <div class="lock__inner">
+      <div class="lock__emoji">🔐</div>
+      <p class="lock__eyebrow">shhh… ek chhota sa raaz</p>
+      <h1 class="lock__title">Yeh surprise sirf <em>tumhare</em> liye hai 🌙</h1>
+      <p class="lock__sub">Andar aane ke liye secret password daalo 💌</p>
+      <form id="lockForm" class="lock__form" autocomplete="off" novalidate>
+        <input id="lockInput" class="lock__input" type="password" inputmode="text"
+               placeholder="secret password…" aria-label="password"
+               autocapitalize="off" autocorrect="off" spellcheck="false" />
+        <button type="submit" class="btn lock__btn"><span>Unlock</span> <span class="btn__ico">🔓</span></button>
+      </form>
+      <p class="lock__hint">hint: jisne yeh pyaar se banaya… bas usi ka naam 😉✨</p>
+      <p id="lockErr" class="lock__err" hidden>oho! galat password 🙈 ek baar phir try karo</p>
+    </div>
+  </div>
+
   <div class="bg" aria-hidden="true"></div>
   <div class="moon" aria-hidden="true"></div>
   <div class="stars" id="stars" aria-hidden="true"></div>
@@ -156,6 +174,7 @@
         <p class="name3d__cap">the star of today ✨<br><span class="cap-sub">my best cousin 💜</span></p>
       </div>
       <button class="btn next-btn" data-next hidden id="nameNext">next <span class="btn__ico">→</span></button>
+      <div class="chbg" aria-hidden="true"></div>
     </section>
 
     <!-- 04 — the artist -->
@@ -252,7 +271,7 @@
     <section class="chapter" data-ch="9" id="ch-video">
       <p class="kicker">one last thing 🎬</p>
       <div class="videowrap">
-        <video id="finaleVideo" class="final-video" playsinline preload="auto"><source src="assets/finale.mp4" type="video/mp4" /></video>
+        <video id="finaleVideo" class="final-video" playsinline preload="auto"><source src="assets/finale.mp4?v=2" type="video/mp4" /></video>
       </div>
       <p class="chapter__body script sign">— Rahul</p>
       <p class="chapter__body soft small">(your cousin, your twin-star — proud of you, always 💛)</p>
@@ -276,6 +295,37 @@
   </main>
 
   <audio id="bgm" src="assets/bg-piano.mp3" preload="auto" loop playsinline></audio>
+
+  <!-- password gate: keeps the surprise private until the secret word is entered -->
+  <script>
+  (function () {
+    var lock  = document.getElementById('lock');
+    var form  = document.getElementById('lockForm');
+    var input = document.getElementById('lockInput');
+    var err   = document.getElementById('lockErr');
+    if (!lock || !form || !input) return;
+    var PASS = 'rahul';
+    document.documentElement.classList.add('is-locked');
+    setTimeout(function () { try { input.focus(); } catch (_) {} }, 350);
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var val = (input.value || '').trim().toLowerCase();
+      if (val === PASS) {
+        lock.classList.add('is-gone');
+        document.documentElement.classList.remove('is-locked');
+        setTimeout(function () { if (lock && lock.parentNode) lock.parentNode.removeChild(lock); }, 750);
+      } else {
+        if (err) err.hidden = false;
+        input.value = '';
+        lock.classList.remove('shake');
+        void lock.offsetWidth;            /* restart the shake animation */
+        lock.classList.add('shake');
+        try { input.focus(); } catch (_) {}
+      }
+    });
+  })();
+  </script>
+
   <script type="module" src="js/app.js?v=1"></script>
 </body>
 </html>

@@ -322,9 +322,10 @@ b{font-weight:600}
 .cake__hint{color:var(--pink-soft);font-size:.85rem;animation:blink 1.6s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:.55}50%{opacity:1}}
 
-/* ---- CH9 video ---- */
-.videowrap{width:min(82vw,340px);border-radius:16px;overflow:hidden;border:1px solid var(--card-bd);box-shadow:var(--shadow);background:#000}
-.final-video{width:100%;max-height:52vh;object-fit:contain;background:#000;display:block}   /* bounded so the full clip + its bottom text always fit on screen */
+/* ---- CH9 video (landscape clip — fills its own 16:9-ish frame, no letterbox, looks natural) ---- */
+.videowrap{width:min(94vw,470px);aspect-ratio:848/478;border-radius:16px;overflow:hidden;
+  border:1px solid var(--card-bd);box-shadow:var(--shadow);background:#000}
+.final-video{width:100%;height:100%;object-fit:cover;background:#000;display:block}   /* frame matches the clip's ratio, so the whole landscape video shows with no bars */
 
 /* ---- CH10 end ---- */
 .end{display:flex;flex-direction:column;align-items:center;gap:.8rem}
@@ -364,6 +365,42 @@ b{font-weight:600}
 /* ---- CH08 twin / same-birthday ---- */
 .twinpic{width:fit-content;max-width:76vw;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid var(--card-bd);box-shadow:0 18px 52px rgba(168,107,255,.45);background:#0e0722}
 .twinpic img{display:block;height:auto;width:auto;max-height:40vh;max-width:100%}   /* full uncropped picture, bounded so the whole chapter fits on screen */
+
+/* ---- CH-NAME: roses photo as the page background (full image, uncropped, clear) ---- */
+/* every real element (title, balloons, AHANA, caption, button) stays in front */
+#ch-name > *:not(.chbg){position:relative;z-index:2}
+.chbg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;animation:none!important}
+/* soft blurred fill behind, so the screen is full-bleed and never shows empty bars */
+.chbg::before{content:"";position:absolute;inset:-8%;
+  background:url(../assets/roses.jpg) center/cover no-repeat;
+  filter:blur(22px) brightness(.45) saturate(1.05);transform:scale(1.06)}
+/* the WHOLE photo, contained (never cropped) + a gentle top/bottom scrim for text legibility */
+.chbg::after{content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(14,6,30,.52) 0%,rgba(14,6,30,.14) 20%,rgba(14,6,30,0) 42%,rgba(14,6,30,.10) 64%,rgba(14,6,30,.74) 100%),
+    url(../assets/roses.jpg) center/contain no-repeat}
+
+/* ---- LOCK (password gate — keeps the surprise private) ---- */
+.lock{position:fixed;inset:0;z-index:200;display:grid;place-items:center;text-align:center;padding:26px;
+  background:radial-gradient(120% 95% at 50% 10%,#3a1a5e 0%,#271046 44%,var(--bg) 100%);
+  transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.lock.is-gone{opacity:0;transform:scale(1.06);pointer-events:none}
+.lock__inner{max-width:430px;display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.lock__emoji{font-size:3.1rem;animation:giftbob 2.6s ease-in-out infinite;margin-bottom:.15rem}
+.lock__eyebrow{text-transform:uppercase;letter-spacing:.34em;font-size:.6rem;color:var(--pink-soft)}
+.lock__title{font-family:var(--font-d);font-weight:900;font-size:clamp(1.5rem,6.6vw,2.1rem);line-height:1.15;max-width:18ch}
+.lock__sub{color:var(--muted);font-size:.98rem;max-width:26ch}
+.lock__form{display:flex;flex-direction:column;gap:.7rem;width:min(80vw,300px);margin-top:1rem}
+.lock__input{width:100%;text-align:center;font-family:var(--font-s);font-size:1.05rem;color:var(--ink);
+  padding:.85em 1em;border-radius:100px;background:rgba(255,255,255,.08);border:1px solid var(--card-bd);outline:none;
+  transition:border-color .2s,box-shadow .2s}
+.lock__input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,95,168,.22)}
+.lock__input::placeholder{color:var(--faint)}
+.lock__btn{justify-content:center}
+.lock__hint{color:var(--faint);font-size:.78rem;margin-top:.7rem;max-width:28ch;line-height:1.5}
+.lock__err{color:#ff9ec4;font-size:.86rem;margin-top:.1rem;font-weight:500}
+.lock.shake .lock__inner{animation:lockshake .45s cubic-bezier(.36,.07,.19,.97)}
+@keyframes lockshake{10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-8px)}40%,60%{transform:translateX(8px)}}
 
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.1ms!important}
